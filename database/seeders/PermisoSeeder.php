@@ -14,9 +14,18 @@ class PermisoSeeder extends Seeder
             ['nombre' => 'Ver Sucursales', 'clave' => 'sucursales.ver', 'modulo' => 'sucursales', 'descripcion' => 'Permite ver el listado de sucursales'],
             ['nombre' => 'Crear / Editar Sucursal', 'clave' => 'sucursales.gestionar', 'modulo' => 'sucursales', 'descripcion' => 'Permite crear o modificar datos de sucursales'],
 
+            // Módulo Roles y Permisos
+            ['nombre' => 'Ver Roles', 'clave' => 'roles.ver', 'modulo' => 'roles', 'descripcion' => 'Permite ver el listado de roles del sistema'],
+            ['nombre' => 'Crear y Editar Roles', 'clave' => 'roles.gestionar', 'modulo' => 'roles', 'descripcion' => 'Permite crear o modificar roles'],
+
             // Módulo Usuarios y Permisos
             ['nombre' => 'Ver Usuarios', 'clave' => 'usuarios.ver', 'modulo' => 'usuarios', 'descripcion' => 'Permite listar los usuarios del personal'],
+            ['nombre' => 'Crear y Editar Usuarios', 'clave' => 'usuarios.gestionar', 'modulo' => 'usuarios', 'descripcion' => 'Permite registrar y editar usuarios del personal'],
             ['nombre' => 'Gestionar Permisos de Usuario', 'clave' => 'usuarios.permisos', 'modulo' => 'usuarios', 'descripcion' => 'Permite asignar/quitar permisos individuales a usuarios'],
+
+            // Módulo Servicios
+            ['nombre' => 'Ver Servicios', 'clave' => 'servicios.ver', 'modulo' => 'servicios', 'descripcion' => 'Permite ver el catálogo de servicios'],
+            ['nombre' => 'Gestionar Servicios', 'clave' => 'servicios.gestionar', 'modulo' => 'servicios', 'descripcion' => 'Permite crear, editar o eliminar servicios'],
 
             // Módulo Clientes
             ['nombre' => 'Ver Historial Completo de Clientes', 'clave' => 'clientes.ver_todo', 'modulo' => 'clientes', 'descripcion' => 'Permite consultar el historial de clientes de todas las sucursales'],

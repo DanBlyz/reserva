@@ -63,6 +63,28 @@ class User extends Authenticatable
         return $this->belongsTo(Sucursal::class, 'sucursal_id');
     }
 
+    public function esAdmin(): bool
+    {
+        return $this->rol && ($this->rol->slug === 'admin' || $this->rol->nombre === 'Administrador');
+    }
+
+    public function sucursalActiva(): ?Sucursal
+    {
+        if ($this->esAdmin()) {
+            $sucursalId = session('sucursal_activa_id');
+            if ($sucursalId) {
+                $sucursal = Sucursal::find($sucursalId);
+                if ($sucursal && $sucursal->activa) {
+                    return $sucursal;
+                }
+            }
+
+            return $this->sucursal ?? Sucursal::where('activa', true)->first();
+        }
+
+        return $this->sucursal;
+    }
+
     public function rol(): BelongsTo
     {
         return $this->belongsTo(Rol::class, 'rol_id');

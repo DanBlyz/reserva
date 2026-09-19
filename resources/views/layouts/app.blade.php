@@ -23,6 +23,7 @@
 
     <!-- Tailwind CSS Compilado -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <script src="{{ asset('js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
     @livewireStyles
 </head>
@@ -107,6 +108,52 @@
     </div>
 
     @livewireScripts
+
+    <!-- INTEGRACIÓN GLOBAL DE SWEETALERT2 PARA MENSAJES DE ÉXITO Y ERROR -->
+    <script>
+        function mostrarSweetAlert(icon, title, text) {
+            const esOscuro = document.documentElement.classList.contains('dark');
+            
+            Swal.fire({
+                icon: icon,
+                title: title,
+                text: text,
+                timer: icon === 'success' ? 3500 : undefined,
+                timerProgressBar: icon === 'success',
+                showConfirmButton: icon !== 'success',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#4f46e5',
+                background: esOscuro ? '#0f172a' : '#ffffff',
+                color: esOscuro ? '#f8fafc' : '#0f172a',
+                customClass: {
+                    popup: 'rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl',
+                    title: 'text-base font-bold text-slate-900 dark:text-white',
+                    htmlContainer: 'text-xs text-slate-600 dark:text-slate-300',
+                    confirmButton: 'px-5 py-2.5 rounded-xl font-semibold text-xs shadow-md transition-all hover:scale-105',
+                }
+            });
+        }
+
+        // 1. Mensajes de sesión Blade (carga de página o redirecciones)
+        document.addEventListener('DOMContentLoaded', function () {
+            @if(session('success'))
+                mostrarSweetAlert('success', '¡Operación Exitosa!', @json(session('success')));
+            @endif
+
+            @if(session('error'))
+                mostrarSweetAlert('error', 'Atención / Error', @json(session('error')));
+            @endif
+        });
+
+        // 2. Eventos reactivos despachados desde cualquier componente Livewire ($this->dispatch('swal', ...))
+        window.addEventListener('swal', function (event) {
+            const data = Array.isArray(event.detail) ? event.detail[0] : (event.detail || {});
+            const icon = data.icon || 'info';
+            const title = data.title || (icon === 'success' ? '¡Operación Exitosa!' : (icon === 'error' ? 'Atención / Error' : 'Notificación'));
+            const text = data.text || data.message || '';
+            mostrarSweetAlert(icon, title, text);
+        });
+    </script>
 </body>
 
 </html>

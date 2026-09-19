@@ -21,16 +21,51 @@
             </svg>
         </button>
 
-        <!-- BREADCRUMB / TITULO DE LA APLICACION -->
-        <div class="hidden sm:flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-            <span class="font-medium text-slate-800 dark:text-slate-200">Sistema de Reservas</span>
-            <span>/</span>
-            <span class="text-indigo-600 dark:text-indigo-400 font-semibold">Panel de Atención</span>
+        <!-- BREADCRUMB / TITULO DINAMICO DE LA SECCION -->
+        <div class="hidden sm:flex items-center gap-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            @php
+                $modulo = 'Principal';
+                $apartado = 'Dashboard';
+
+                if (request()->routeIs('services.*')) {
+                    $modulo = 'Gestión';
+                    $apartado = 'Servicios de Fisioterapia';
+                } elseif (request()->routeIs('admin.sucursales')) {
+                    $modulo = 'Administración';
+                    $apartado = 'Sedes y Sucursales';
+                } elseif (request()->routeIs('admin.roles')) {
+                    $modulo = 'Administración';
+                    $apartado = 'Roles y Permisos';
+                } elseif (request()->routeIs('admin.usuarios')) {
+                    $modulo = 'Administración';
+                    $apartado = 'Personal y Usuarios';
+                } elseif (request()->routeIs('reservations.*')) {
+                    $modulo = 'Agenda';
+                    $apartado = 'Citas de Fisioterapia';
+                } elseif (request()->routeIs('clients.*')) {
+                    $modulo = 'Gestión';
+                    $apartado = 'Clientes / Pacientes';
+                } elseif (request()->routeIs('profile.*')) {
+                    $modulo = 'Cuenta';
+                    $apartado = 'Mi Perfil';
+                }
+            @endphp
+
+            <span class="font-medium text-slate-700 dark:text-slate-300">{{ $modulo }}</span>
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+            <span class="text-indigo-600 dark:text-indigo-400 font-semibold">{{ $apartado }}</span>
         </div>
     </div>
 
     <!-- LADO DERECHO: ACCIONES, TOGGLE TEMA & USUARIO -->
     <div class="flex items-center gap-3">
+
+        <!-- SELECTOR DE SUCURSAL ACTIVA -->
+        @auth
+            <livewire:components.sucursal-selector />
+        @endauth
 
         <!-- CONMUTADOR DE TEMA (CLARO / OSCURO) -->
         <button @click="toggleTheme()"
